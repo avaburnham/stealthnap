@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "name": "stealthnap",
+  "workspaces": [
+    "web",
+    "server",
+    "mobile",
+    "shared"
+  ]
+}
