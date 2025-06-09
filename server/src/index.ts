@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { Request, Response } from 'express';
 dotenv.config();
 
 
@@ -24,14 +25,28 @@ app.get('/api/gear', async (req, res) => {
   res.json(gear);
 });
 
-// Add new gear
-app.post('/api/gear', async (req, res) => {
+
+//@ts-ignore
+app.post('/api/gear', async (req: Request, res: Response) => {
   const { name, category, description } = req.body;
-  const newGear = await prisma.gear.create({
-    data: { name, category, description }
-  });
-  res.json(newGear);
+  try {
+    if (!name || !category) {
+      return res.status(400).json({ error: 'Name and category are required.' });
+    }
+    const newGear = await prisma.gear.create({
+      data: {
+        name,
+        category,
+        description,
+      },
+    });
+    res.status(201).json(newGear);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to add gear' });
+  }
 });
+
 
 // Get all locations
 app.get('/api/locations', async (req, res) => {
