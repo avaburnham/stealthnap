@@ -41,7 +41,8 @@ export default function HomeScreen() {
        <Text style={{ fontSize: 22, fontWeight: 'bold', marginBottom: 24 }}>
         For the Bold and Brave.
       </Text>
-     <Link href="/gear" asChild>
+      <View style={{ flexDirection: 'row' }}>
+           <Link href="/gear" asChild>
         <TouchableOpacity style={buttonStyle}>
           <Text style={buttonTextStyle}>Gear</Text>
         </TouchableOpacity>
@@ -51,6 +52,18 @@ export default function HomeScreen() {
           <Text style={buttonTextStyle}>Locations</Text>
         </TouchableOpacity>
       </Link>
+
+
+      </View>
+            <View style={{ flexDirection: 'row' }}>
+           <Link href="/forum" asChild>
+        <TouchableOpacity style={buttonStyle}>
+          <Text style={buttonTextStyle}>Forum</Text>
+        </TouchableOpacity>
+      </Link>
+
+      </View>
+
     </View>
   );
 }
