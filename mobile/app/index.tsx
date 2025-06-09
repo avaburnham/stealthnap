@@ -62,6 +62,13 @@ export default function HomeScreen() {
         </TouchableOpacity>
       </Link>
 
+                 <Link href="/about" asChild>
+        <TouchableOpacity style={buttonStyle}>
+          <Text style={buttonTextStyle}>About</Text>
+        </TouchableOpacity>
+      </Link>
+
+
       </View>
 
     </View>
