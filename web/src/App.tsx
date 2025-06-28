@@ -1,6 +1,8 @@
+import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Gear from './pages/Gear';
 import Locations from './pages/Locations';
+import Login from './pages/login'; // <-- Make sure path is correct
 
 function Home() {
   return (
@@ -13,8 +15,44 @@ function Home() {
 }
 
 export default function App() {
+  const [token, setToken] = useState(localStorage.getItem('token'));
+  const [userId, setUserId] = useState(localStorage.getItem('userId'));
+  const [email, setEmail] = useState(localStorage.getItem('email') || '');
+
+  const handleLogin = (jwt, userId, email) => {
+    setToken(jwt);
+    setUserId(userId);
+    setEmail(email);
+    localStorage.setItem('token', jwt);
+    localStorage.setItem('userId', userId);
+    localStorage.setItem('email', email);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('email');
+    setToken(null);
+    setUserId(null);
+    setEmail('');
+  };
+
   return (
     <BrowserRouter>
+      {/* ✅ Logout and login info above navbar */}
+      {token && (
+        <div className="bg-light px-3 pt-2 pb-3 border-bottom text-end">
+          <button className="btn btn-outline-secondary btn-sm mb-1" onClick={handleLogout}>
+            Logout
+          </button>
+          {email && (
+            <div className="text-secondary small">
+              Logged in as: <span className="fw-semibold">{email}</span>
+            </div>
+          )}
+        </div>
+      )}
+
       <nav className="navbar navbar-expand-lg navbar-light bg-light mb-4">
         <div className="container">
           <Link className="navbar-brand fw-bold" to="/">StealthNap</Link>
@@ -41,11 +79,18 @@ export default function App() {
           </div>
         </div>
       </nav>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/gear" element={<Gear />} />
-        <Route path="/locations" element={<Locations />} />
-      </Routes>
+
+      <div className="container">
+        {!token ? (
+          <Login onLogin={handleLogin} />
+        ) : (
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/gear" element={<Gear />} />
+            <Route path="/locations" element={<Locations />} />
+          </Routes>
+        )}
+      </div>
     </BrowserRouter>
   );
 }
